@@ -1,7 +1,12 @@
 import streamlit as st
 import pandas as pd
 
-from database.models import inserir_usuario, listar_usuarios
+from database.models import (
+    inserir_usuario,
+    listar_usuarios,
+    login_existe
+)
+
 from database.seguranca import criptografar_senha
 
 from utils.validacoes import email_valido
