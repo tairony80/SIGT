@@ -168,3 +168,45 @@ def excluir_usuario(id_usuario):
 
     conexao.commit()
     conexao.close()
+
+def atualizar_usuario(
+    id_usuario,
+    nome,
+    matricula,
+    cargo,
+    email,
+    login,
+    perfil,
+    status
+):
+
+    conexao = conectar()
+
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        UPDATE usuarios
+        SET
+            nome=?,
+            matricula=?,
+            cargo=?,
+            email=?,
+            login=?,
+            perfil=?,
+            status=?
+        WHERE id=?
+    """, (
+
+        nome,
+        matricula,
+        cargo,
+        email,
+        login,
+        perfil,
+        status,
+        id_usuario
+
+    ))
+
+    conexao.commit()
+    conexao.close()
