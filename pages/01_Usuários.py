@@ -4,7 +4,8 @@ import pandas as pd
 from database.models import (
     inserir_usuario,
     listar_usuarios,
-    login_existe
+    login_existe,
+    excluir_usuario
 )
 
 from database.seguranca import criptografar_senha
@@ -103,8 +104,24 @@ df = pd.DataFrame(
     ]
 )
 
+st.divider()
+
+st.subheader("Excluir usuário")
+
+id_usuario = st.number_input(
+    "ID do usuário",
+    min_value=1,
+    step=1
+)
+
+if st.button("🗑️ Excluir usuário"):
+    excluir_usuario(id_usuario)
+    st.success("Usuário excluído com sucesso!")
+    st.rerun()
+
 st.dataframe(
     df,
     use_container_width=True,
     hide_index=True
 )
+
