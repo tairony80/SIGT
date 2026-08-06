@@ -127,3 +127,30 @@ def login_existe(login):
     conexao.close()
 
     return usuario is not None
+
+def buscar_usuario_login(login):
+
+    conexao = conectar()
+
+    cursor = conexao.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            id,
+            nome,
+            login,
+            senha,
+            perfil,
+            status
+        FROM usuarios
+        WHERE login = ?
+        """,
+        (login,)
+    )
+
+    usuario = cursor.fetchone()
+
+    conexao.close()
+
+    return usuario
