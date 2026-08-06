@@ -34,8 +34,10 @@ status = st.selectbox(
         "Inativo"
     ]
 )
-
+from database.seguranca import criptografar_senha
 if st.button("💾 Salvar"):
+    
+senha_hash = criptografar_senha(senha)
 
     inserir_usuario(
         nome,
@@ -43,7 +45,7 @@ if st.button("💾 Salvar"):
         cargo,
         email,
         login,
-        senha,
+        senha_hash,
         perfil,
         status
     )
