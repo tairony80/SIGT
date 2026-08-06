@@ -154,3 +154,17 @@ def buscar_usuario_login(login):
     conexao.close()
 
     return usuario
+
+def excluir_usuario(id_usuario):
+
+    conexao = conectar()
+
+    cursor = conexao.cursor()
+
+    cursor.execute(
+        "DELETE FROM usuarios WHERE id = ?",
+        (id_usuario,)
+    )
+
+    conexao.commit()
+    conexao.close()
