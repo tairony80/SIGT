@@ -1,19 +1,17 @@
 import streamlit as st
-import pandas as pd
 
 from database.models import (
     inserir_usuario,
-    listar_usuarios,
-    login_existe,
-    excluir_usuario
+    login_existe
 )
 
 from database.seguranca import criptografar_senha
 from utils.validacoes import email_valido
 
-# ===================================================
+
+# =====================================================
 # CONFIGURAÇÃO DA PÁGINA
-# ===================================================
+# =====================================================
 
 st.set_page_config(
     page_title="Usuários",
@@ -21,141 +19,172 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("👤 Cadastro de Usuários")
+st.title("👤 Gestão de Usuários")
+
+st.caption("Sistema Integrado de Termografia - SIGT")
 
 st.divider()
 
-# ===================================================
-# FORMULÁRIO
-# ===================================================
 
-nome = st.text_input("Nome")
-matricula = st.text_input("Matrícula")
-cargo = st.text_input("Cargo")
-email = st.text_input("E-mail")
-login = st.text_input("Login")
-senha = st.text_input("Senha", type="password")
+# =====================================================
+# ABAS
+# =====================================================
 
-perfil = st.selectbox(
-    "Perfil",
+aba1, aba2, aba3, aba4 = st.tabs(
     [
-        "Administrador",
-        "Inspetor",
-        "Visualizador"
+        "➕ Cadastro",
+        "📋 Usuários",
+        "✏️ Editar",
+        "🗑️ Excluir"
     ]
 )
 
-status = st.selectbox(
-    "Status",
-    [
-        "Ativo",
-        "Inativo"
-    ]
-)
 
-# ===================================================
-# BOTÃO SALVAR
-# ===================================================
+# =====================================================
+# ABA 1
+# CADASTRO
+# =====================================================
 
-if st.button("💾 Salvar"):
+with aba1:
 
-    if not nome.strip():
-        st.error("Informe o nome.")
-        st.stop()
+    st.subheader("Novo Usuário")
 
-    if not email.strip():
-        st.error("Informe o e-mail.")
-        st.stop()
+    col1, col2 = st.columns(2)
 
-    if not email_valido(email):
-        st.error("E-mail inválido.")
-        st.stop()
+    with col1:
 
-    if not login.strip():
-        st.error("Informe o login.")
-        st.stop()
+        nome = st.text_input("Nome")
 
-    if not senha.strip():
-        st.error("Informe a senha.")
-        st.stop()
+        matricula = st.text_input("Matrícula")
 
-    if login_existe(login):
-        st.error("Este login já está cadastrado.")
-        st.stop()
+        cargo = st.text_input("Cargo")
 
-    senha_hash = criptografar_senha(senha)
+        email = st.text_input("E-mail")
 
-    inserir_usuario(
-        nome,
-        matricula,
-        cargo,
-        email,
-        login,
-        senha_hash,
-        perfil,
-        status
-    )
+    with col2:
 
-    st.success("Usuário cadastrado com sucesso!")
+        login = st.text_input("Login")
 
-    st.rerun()
+        senha = st.text_input(
+            "Senha",
+            type="password"
+        )
 
-# ===================================================
-# LISTA DE USUÁRIOS
-# ===================================================
-
-st.divider()
-
-st.subheader("📋 Usuários cadastrados")
-
-usuarios = listar_usuarios()
-
-if len(usuarios) == 0:
-
-    st.info("Nenhum usuário cadastrado.")
-
-else:
-
-    df = pd.DataFrame(
-        usuarios,
-        columns=[
-            "ID",
-            "Nome",
-            "Matrícula",
-            "Cargo",
-            "E-mail",
-            "Login",
+        perfil = st.selectbox(
             "Perfil",
-            "Status"
-        ]
-    )
+            [
+                "Administrador",
+                "Inspetor",
+                "Visualizador"
+            ]
+        )
 
-    st.dataframe(
-        df,
-        use_container_width=True,
-        hide_index=True
-    )
+        status = st.selectbox(
+            "Status",
+            [
+                "Ativo",
+                "Inativo"
+            ]
+        )
 
-# ===================================================
-# EXCLUSÃO
-# ===================================================
+    st.divider()
 
-st.divider()
+    if st.button(
+        "💾 Salvar Usuário",
+        use_container_width=True
+    ):
 
-st.subheader("🗑️ Excluir usuário")
+        if not nome.strip():
 
-if len(usuarios) > 0:
+            st.error("Informe o nome.")
 
-    id_usuario = st.selectbox(
-        "Selecione o usuário",
-        options=df["ID"].tolist(),
-        format_func=lambda x: f"{x} - {df[df['ID']==x]['Nome'].values[0]}"
-    )
+            st.stop()
 
-    if st.button("🗑️ Excluir"):
+        if not email.strip():
 
-        excluir_usuario(id_usuario)
+            st.error("Informe o e-mail.")
 
-        st.success("Usuário excluído com sucesso!")
+            st.stop()
+
+        if not email_valido(email):
+
+            st.error("E-mail inválido.")
+
+            st.stop()
+
+        if not login.strip():
+
+            st.error("Informe o login.")
+
+            st.stop()
+
+        if not senha.strip():
+
+            st.error("Informe a senha.")
+
+            st.stop()
+
+        if login_existe(login):
+
+            st.error("Este login já existe.")
+
+            st.stop()
+
+        senha_hash = criptografar_senha(senha)
+
+        inserir_usuario(
+
+            nome,
+
+            matricula,
+
+            cargo,
+
+            email,
+
+            login,
+
+            senha_hash,
+
+            perfil,
+
+            status
+
+        )
+
+        st.success("Usuário cadastrado com sucesso!")
 
         st.rerun()
+
+
+# =====================================================
+# ABA 2
+# =====================================================
+
+with aba2:
+
+    st.info(
+        "A listagem de usuários será criada na Aula 6 - Parte 2."
+    )
+
+
+# =====================================================
+# ABA 3
+# =====================================================
+
+with aba3:
+
+    st.info(
+        "A edição de usuários será criada na Aula 6 - Parte 3."
+    )
+
+
+# =====================================================
+# ABA 4
+# =====================================================
+
+with aba4:
+
+    st.info(
+        "A exclusão de usuários será criada na Aula 6 - Parte 4."
+    )
