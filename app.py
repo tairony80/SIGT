@@ -81,3 +81,4 @@ st.info(
 st.caption(
     "Desenvolvido em Python + Streamlit"
 )
+st.success("Banco de dados inicializado com sucesso.")
