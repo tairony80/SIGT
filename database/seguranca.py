@@ -1,14 +1,28 @@
 import hashlib
 
-def criptografar_senha(senha):
 
-    senha_hash = hashlib.sha256(
+# ===================================================
+# CRIPTOGRAFAR SENHA
+# ===================================================
+
+def criptografar_senha(senha):
+    """
+    Recebe uma senha em texto e retorna o hash SHA-256.
+    """
+
+    return hashlib.sha256(
         senha.encode()
     ).hexdigest()
 
-    return senha_hash
+
+# ===================================================
+# VERIFICAR SENHA
+# ===================================================
 
 def verificar_senha(senha_digitada, senha_banco):
+    """
+    Compara a senha digitada com a senha armazenada no banco.
+    """
 
     senha_hash = criptografar_senha(senha_digitada)
 
