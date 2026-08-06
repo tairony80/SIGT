@@ -88,7 +88,16 @@ st.divider()
 
 st.subheader("Usuários cadastrados")
 
-usuarios = listar_usuarios()
+lista = {}
+
+for usuario in usuarios:
+    chave = f"{usuario[0]} - {usuario[1]}"
+    lista[chave] = usuario
+
+selecionado = st.selectbox(
+    "Selecione o usuário",
+    options=list(lista.keys())
+)
 
 df = pd.DataFrame(
     usuarios,
