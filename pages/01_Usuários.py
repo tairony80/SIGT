@@ -4,6 +4,8 @@ import pandas as pd
 from database.models import inserir_usuario, listar_usuarios
 from database.seguranca import criptografar_senha
 
+from utils.validacoes import email_valido
+
 st.set_page_config(
     page_title="Usuários",
     page_icon="👤"
@@ -39,6 +41,22 @@ status = st.selectbox(
 
 if st.button("💾 Salvar"):
 
+    if nome == "":
+        st.error("Informe o nome.")
+        st.stop()
+
+    if login == "":
+        st.error("Informe o login.")
+        st.stop()
+
+    if senha == "":
+        st.error("Informe a senha.")
+        st.stop()
+
+    if not email_valido(email):
+        st.error("E-mail inválido.")
+        st.stop()
+
     senha_hash = criptografar_senha(senha)
 
     inserir_usuario(
@@ -51,6 +69,8 @@ if st.button("💾 Salvar"):
         perfil,
         status
     )
+
+    st.success("Usuário cadastrado com sucesso!")
 
     st.success("Usuário cadastrado com sucesso!")
 
