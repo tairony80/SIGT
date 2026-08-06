@@ -1,5 +1,8 @@
 from database.banco import conectar
 
+st.divider()
+
+st.subheader("Editar usuário")
 
 def criar_tabelas():
 
