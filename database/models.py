@@ -81,3 +81,32 @@ def inserir_usuario(
     conexao.commit()
 
     conexao.close()
+def listar_usuarios():
+
+    conexao = conectar()
+
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+
+        SELECT
+            id,
+            nome,
+            matricula,
+            cargo,
+            email,
+            login,
+            perfil,
+            status
+
+        FROM usuarios
+
+        ORDER BY nome
+
+    """)
+
+    usuarios = cursor.fetchall()
+
+    conexao.close()
+
+    return usuarios
