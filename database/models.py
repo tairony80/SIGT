@@ -1,17 +1,17 @@
 from database.banco import conectar
 
-st.divider()
 
-st.subheader("Editar usuário")
+# ===================================================
+# CRIAÇÃO DAS TABELAS
+# ===================================================
 
 def criar_tabelas():
 
     conexao = conectar()
-
     cursor = conexao.cursor()
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS usuarios(
+        CREATE TABLE IF NOT EXISTS usuarios (
 
             id INTEGER PRIMARY KEY AUTOINCREMENT,
 
@@ -35,8 +35,13 @@ def criar_tabelas():
     """)
 
     conexao.commit()
-
     conexao.close()
+
+
+# ===================================================
+# CADASTRO DE USUÁRIOS
+# ===================================================
+
 def inserir_usuario(
     nome,
     matricula,
@@ -49,7 +54,6 @@ def inserir_usuario(
 ):
 
     conexao = conectar()
-
     cursor = conexao.cursor()
 
     cursor.execute("""
@@ -82,17 +86,22 @@ def inserir_usuario(
     ))
 
     conexao.commit()
-
     conexao.close()
+
+
+# ===================================================
+# LISTAR USUÁRIOS
+# ===================================================
+
 def listar_usuarios():
 
     conexao = conectar()
-
     cursor = conexao.cursor()
 
     cursor.execute("""
 
         SELECT
+
             id,
             nome,
             matricula,
@@ -114,15 +123,22 @@ def listar_usuarios():
 
     return usuarios
 
+
+# ===================================================
+# VERIFICAR LOGIN
+# ===================================================
+
 def login_existe(login):
 
     conexao = conectar()
-
     cursor = conexao.cursor()
 
     cursor.execute(
-        "SELECT id FROM usuarios WHERE login=?",
+
+        "SELECT id FROM usuarios WHERE login = ?",
+
         (login,)
+
     )
 
     usuario = cursor.fetchone()
@@ -131,26 +147,32 @@ def login_existe(login):
 
     return usuario is not None
 
+
+# ===================================================
+# BUSCAR USUÁRIO PELO LOGIN
+# ===================================================
+
 def buscar_usuario_login(login):
 
     conexao = conectar()
-
     cursor = conexao.cursor()
 
-    cursor.execute(
-        """
+    cursor.execute("""
+
         SELECT
+
             id,
             nome,
             login,
             senha,
             perfil,
             status
+
         FROM usuarios
+
         WHERE login = ?
-        """,
-        (login,)
-    )
+
+    """, (login,))
 
     usuario = cursor.fetchone()
 
@@ -158,19 +180,10 @@ def buscar_usuario_login(login):
 
     return usuario
 
-def excluir_usuario(id_usuario):
 
-    conexao = conectar()
-
-    cursor = conexao.cursor()
-
-    cursor.execute(
-        "DELETE FROM usuarios WHERE id = ?",
-        (id_usuario,)
-    )
-
-    conexao.commit()
-    conexao.close()
+# ===================================================
+# ATUALIZAR USUÁRIO
+# ===================================================
 
 def atualizar_usuario(
     id_usuario,
@@ -184,20 +197,24 @@ def atualizar_usuario(
 ):
 
     conexao = conectar()
-
     cursor = conexao.cursor()
 
     cursor.execute("""
+
         UPDATE usuarios
+
         SET
-            nome=?,
-            matricula=?,
-            cargo=?,
-            email=?,
-            login=?,
-            perfil=?,
-            status=?
-        WHERE id=?
+
+            nome = ?,
+            matricula = ?,
+            cargo = ?,
+            email = ?,
+            login = ?,
+            perfil = ?,
+            status = ?
+
+        WHERE id = ?
+
     """, (
 
         nome,
@@ -210,6 +227,27 @@ def atualizar_usuario(
         id_usuario
 
     ))
+
+    conexao.commit()
+    conexao.close()
+
+
+# ===================================================
+# EXCLUIR USUÁRIO
+# ===================================================
+
+def excluir_usuario(id_usuario):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute(
+
+        "DELETE FROM usuarios WHERE id = ?",
+
+        (id_usuario,)
+
+    )
 
     conexao.commit()
     conexao.close()
