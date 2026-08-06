@@ -110,3 +110,20 @@ def listar_usuarios():
     conexao.close()
 
     return usuarios
+
+def login_existe(login):
+
+    conexao = conectar()
+
+    cursor = conexao.cursor()
+
+    cursor.execute(
+        "SELECT id FROM usuarios WHERE login=?",
+        (login,)
+    )
+
+    usuario = cursor.fetchone()
+
+    conexao.close()
+
+    return usuario is not None
