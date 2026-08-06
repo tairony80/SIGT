@@ -62,11 +62,11 @@ if st.button("💾 Salvar"):
     if not email_valido(email):
         st.error("E-mail inválido.")
         st.stop()
-        
-if login_existe(login):
-    st.error("Este login já está cadastrado.")
-    st.stop()
-    
+
+    if login_existe(login):
+        st.error("Este login já está cadastrado.")
+        st.stop()
+
     senha_hash = criptografar_senha(senha)
 
     inserir_usuario(
@@ -82,22 +82,11 @@ if login_existe(login):
 
     st.success("Usuário cadastrado com sucesso!")
 
-    st.success("Usuário cadastrado com sucesso!")
-
 st.divider()
 
 st.subheader("Usuários cadastrados")
 
-lista = {}
-
-for usuario in usuarios:
-    chave = f"{usuario[0]} - {usuario[1]}"
-    lista[chave] = usuario
-
-selecionado = st.selectbox(
-    "Selecione o usuário",
-    options=list(lista.keys())
-)
+usuarios = listar_usuarios()
 
 df = pd.DataFrame(
     usuarios,
@@ -111,6 +100,12 @@ df = pd.DataFrame(
         "Perfil",
         "Status"
     ]
+)
+
+st.dataframe(
+    df,
+    use_container_width=True,
+    hide_index=True
 )
 
 st.divider()
@@ -127,10 +122,3 @@ if st.button("🗑️ Excluir usuário"):
     excluir_usuario(id_usuario)
     st.success("Usuário excluído com sucesso!")
     st.rerun()
-
-st.dataframe(
-    df,
-    use_container_width=True,
-    hide_index=True
-)
-
