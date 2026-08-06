@@ -26,7 +26,7 @@ perfil = st.selectbox(
         "Visualizador"
     ]
 )
-from database.models import inserir_usuario
+from database.models import inserir_usuario, listar_usuarios
 status = st.selectbox(
     "Status",
     [
@@ -51,3 +51,13 @@ senha_hash = criptografar_senha(senha)
     )
 
     st.success("Usuário cadastrado com sucesso!")
+st.divider()
+
+st.subheader("Usuários cadastrados")
+
+usuarios = listar_usuarios()
+
+st.dataframe(
+    usuarios,
+    use_container_width=True
+)
