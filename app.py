@@ -1,17 +1,19 @@
 import streamlit as st
 from datetime import datetime
+from database.criar_banco import inicializar_banco
 
 # ==========================
 # CONFIGURAÇÃO DA PÁGINA
 # ==========================
 
 st.set_page_config(
-    page_title="SIGT",
+     page_title="SIGT",
     page_icon="🌡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
+   # Inicializa o banco de dados
+inicializar_banco()
 # ==========================
 # MENU LATERAL
 # ==========================
