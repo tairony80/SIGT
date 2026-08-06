@@ -26,7 +26,7 @@ perfil = st.selectbox(
         "Visualizador"
     ]
 )
-
+from database.models import inserir_usuario
 status = st.selectbox(
     "Status",
     [
@@ -35,4 +35,17 @@ status = st.selectbox(
     ]
 )
 
-st.button("💾 Salvar")
+if st.button("💾 Salvar"):
+
+    inserir_usuario(
+        nome,
+        matricula,
+        cargo,
+        email,
+        login,
+        senha,
+        perfil,
+        status
+    )
+
+    st.success("Usuário cadastrado com sucesso!")
