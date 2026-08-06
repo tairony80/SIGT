@@ -61,7 +61,11 @@ if st.button("💾 Salvar"):
     if not email_valido(email):
         st.error("E-mail inválido.")
         st.stop()
-
+        
+if login_existe(login):
+    st.error("Este login já está cadastrado.")
+    st.stop()
+    
     senha_hash = criptografar_senha(senha)
 
     inserir_usuario(
