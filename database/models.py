@@ -34,3 +34,50 @@ def criar_tabelas():
     conexao.commit()
 
     conexao.close()
+def inserir_usuario(
+    nome,
+    matricula,
+    cargo,
+    email,
+    login,
+    senha,
+    perfil,
+    status
+):
+
+    conexao = conectar()
+
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        INSERT INTO usuarios
+        (
+            nome,
+            matricula,
+            cargo,
+            email,
+            login,
+            senha,
+            perfil,
+            status
+        )
+
+        VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
+
+    """, (
+
+        nome,
+        matricula,
+        cargo,
+        email,
+        login,
+        senha,
+        perfil,
+        status
+
+    ))
+
+    conexao.commit()
+
+    conexao.close()
