@@ -1,9 +1,12 @@
 import streamlit as st
+import pandas as pd
 
 from database.models import (
     inserir_usuario,
+    listar_usuarios,
     login_existe
 )
+
 
 from database.seguranca import criptografar_senha
 from utils.validacoes import email_valido
@@ -163,9 +166,29 @@ with aba1:
 
 with aba2:
 
-    st.info(
-        "A listagem de usuários será criada na Aula 6 - Parte 2."
-    )
+    st.subheader("📋 Usuários Cadastrados")
+
+    usuarios = listar_usuarios()
+
+    if len(usuarios) == 0:
+
+        st.warning("Nenhum usuário cadastrado.")
+
+    else:
+
+        df = pd.DataFrame(
+            usuarios,
+            columns=[
+                "ID",
+                "Nome",
+                "Matrícula",
+                "Cargo",
+                "E-mail",
+                "Login",
+                "Perfil",
+                "Status"
+            ]
+        )
 
 
 # =====================================================
@@ -188,3 +211,49 @@ with aba4:
     st.info(
         "A exclusão de usuários será criada na Aula 6 - Parte 4."
     )
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric("Total", len(df))
+
+with col2:
+    st.metric(
+        "Administradores",
+        len(df[df["Perfil"] == "Administrador"])
+    )
+
+with col3:
+    st.metric(
+        "Inspetores",
+        len(df[df["Perfil"] == "Inspetor"])
+    )
+
+with col4:
+    st.metric(
+        "Visualizadores",
+        len(df[df["Perfil"] == "Visualizador"])
+    )
+
+st.divider()
+
+pesquisa = st.text_input(
+    "🔍 Pesquisar usuário"
+)
+
+if pesquisa:
+
+    filtro = df["Nome"].str.contains(
+        pesquisa,
+        case=False,
+        na=False
+    )
+
+    df = df[filtro]
+
+st.dataframe(
+    df,
+    use_container_width=True,
+    hide_index=True
+)
+
